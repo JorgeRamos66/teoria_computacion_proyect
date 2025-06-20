@@ -1,7 +1,10 @@
 from lexer import lexer
 from parser import Parser
 
-with open("rutina.txt", "r", encoding="utf-8") as f:
+import os
+ruta = os.path.join(os.path.dirname(__file__), "rutina.txt")
+with open(ruta, "r", encoding="utf-8") as f:
+
     code = f.read()
 
 tokens = lexer(code)
