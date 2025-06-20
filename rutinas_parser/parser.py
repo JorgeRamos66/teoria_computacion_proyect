@@ -39,6 +39,12 @@ class Parser:
         elif self.peek('DESCANSO'):
             self.match('DESCANSO')
             return {'tipo': 'descanso'}
+        elif self.peek('DORMIR'):
+            self.match('DORMIR')
+            return {'tipo': 'dormir'}
+        elif self.peek('ES_RE_TROLL'):
+            self.match('ES_RE_TROLL')
+            return {'tipo': 'es_re_troll'}
         else:
             raise SyntaxError("Actividad inválida")
 

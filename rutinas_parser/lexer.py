@@ -3,9 +3,9 @@ import re
 # Lista de tokens
 TOKEN_SPEC = [
     ('NUM',      r'\d+'),
-    ('DIA',      r'Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo'),
-    ('GRUPO',    r'Pecho|Espalda|Piernas|Bíceps|Tríceps|Hombros|Abdomen'),
-    ('EJERCICIO', r'Sentadilla|PressBanca|Dominadas|CurlBíceps|Fondos|Plancha|Remo|PressHombro|Crunch'),
+    ('DIA',      r'Lunes|Martes|Miercoles|Jueves|Viernes|Sabado|Domingo'),
+    ('GRUPO',    r'Pecho|Espalda|Piernas|Biceps|Triceps|Hombros|Abdomen'),
+    ('EJERCICIO', r'Sentadilla|PressBanca|Dominadas|CurlBiceps|Fondos|Plancha|Remo|PressHombro|Crunch'),
     ('CARDIO',   r'Cardio'),
     ('DESCANSO', r'Descanso'),
     ('FLECHA',   r'->'),
