@@ -44,7 +44,7 @@ class Parser:
             return {'tipo': 'dormir'}
         elif self.peek('ES_RE_TROLL'):
             self.match('ES_RE_TROLL')
-            return {'tipo': 'es_re_troll'}
+            return {'tipo': 'es_re troll'}
         else:
             raise SyntaxError("Actividad inválida")
 
@@ -53,6 +53,9 @@ class Parser:
         while self.peek('COMA'):
             self.match('COMA')
             ejercicios.append(self.parse_ejercicio())
+        # Si después de un ejercicio viene otro EJERCICIO sin coma, es error
+        if self.peek('EJERCICIO'):
+            raise SyntaxError("Se esperaba ',' entre ejercicios")
         return ejercicios
 
     def parse_ejercicio(self):
@@ -68,7 +71,13 @@ class Parser:
         if self.peek('LBRACK'):
             self.match('LBRACK')
             minutos = self.match('NUM')[1]
-            self.match('MIN')
+            if self.peek('MIN') and self.pos + 1 < len(self.tokens) and self.tokens[self.pos + 1][0] == 'RBRACK':
+                self.match('MIN')
+            elif self.peek('MIN'):
+                raise SyntaxError("Se esperaba ']' después de 'min'")
+            else:
+                encontrado = self.tokens[self.pos][1] if self.pos < len(self.tokens) else 'EOF'
+                raise SyntaxError(f"Se esperaba min, se encontró {encontrado}")
             self.match('RBRACK')
             return minutos
         else:

@@ -18,7 +18,7 @@ TOKEN_SPEC = [
     ('RBRACK',   r'\]'),
     ('MIN',      r'min'),
     ('SKIP',     r'[ \t\n]+'),  # espacios y saltos
-    ('MISMATCH', r'.'),         # cualquier otro carácter
+    ('MISMATCH', r'[a-zA-Z_]+'),         # cualquier otro carácter
 ]
 
 def lexer(code):
@@ -31,7 +31,7 @@ def lexer(code):
         elif kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':
-            print(f"Advertencia: Caracter no perteneciente a la gramática: {value}")
-            continue  # Ignora el caracter y sigue
+            print(f"Advertencia: Palabra no válida en la gramática: {value}")
+            continue
         else:
             yield (kind, value)
