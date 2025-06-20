@@ -31,6 +31,7 @@ def lexer(code):
         elif kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':
-            raise RuntimeError(f'Caracter inesperado: {value}')
+            print(f"Advertencia: Caracter no perteneciente a la gramática: {value}")
+            continue  # Ignora el caracter y sigue
         else:
             yield (kind, value)
