@@ -14,16 +14,19 @@ class Parser:
             raise SyntaxError(f"Se esperaba {expected_type}, se encontró {self.tokens[self.pos] if self.pos < len(self.tokens) else 'EOF'}")
 
     def parse_rutina(self):
-        rutinas = []
+        dias = []
         while self.pos < len(self.tokens):
-            rutinas.append(self.parse_dia())
-        return rutinas
+            dias.append(self.parse_dia())
+        if len(dias) == 1:
+            return {'Rutina': dias[0]}
+        return {'Rutina': dias}
+
 
     def parse_dia(self):
         dia = self.match('DIA')[1]
         self.match('PUNTOS')
         actividad = self.parse_actividad()
-        return {'dia': dia, 'actividad': actividad}
+        return {'Dia': {'nombre': dia, 'actividad': actividad}}
 
     def parse_actividad(self):
         if self.peek('GRUPO'):
@@ -42,9 +45,6 @@ class Parser:
         elif self.peek('DORMIR'):
             self.match('DORMIR')
             return {'tipo': 'dormir'}
-        elif self.peek('ES_RE_TROLL'):
-            self.match('ES_RE_TROLL')
-            return {'tipo': 'es_re troll'}
         else:
             raise SyntaxError("Actividad inválida")
 

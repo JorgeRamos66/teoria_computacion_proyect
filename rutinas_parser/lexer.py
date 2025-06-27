@@ -23,15 +23,19 @@ TOKEN_SPEC = [
 
 def lexer(code):
     tok_regex = '|'.join(f'(?P<{name}>{pattern})' for name, pattern in TOKEN_SPEC)
+    tokens = []
+    error_lexico = False
     for mo in re.finditer(tok_regex, code):
         kind = mo.lastgroup
         value = mo.group()
         if kind == 'NUM':
-            yield ('NUM', int(value))
+            tokens.append(('NUM', int(value)))
         elif kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':
             print(f"Advertencia: Palabra no válida en la gramática: {value}")
+            error_lexico = True
             continue
         else:
-            yield (kind, value)
+            tokens.append((kind, value))
+    return tokens, error_lexico
