@@ -29,7 +29,13 @@ def lexer(code):
         kind = mo.lastgroup
         value = mo.group()
         if kind == 'NUM':
-            tokens.append(('NUM', int(value)))
+            num = int(value)
+            if 1 <= num <= 120:
+                tokens.append(('NUM', num))
+            else:
+                print(f"Advertencia: Número fuera de rango (1-120): {num}")
+                error_lexico = True
+                continue
         elif kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':

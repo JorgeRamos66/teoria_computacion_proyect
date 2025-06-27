@@ -3,7 +3,7 @@ Martes: Biceps -> CurlBiceps(3x15), Remo(3x10) [30 minutos]
 Domingo: Espalda -> Dominadas(4x10) Remo(3x10) [50min]
 Lunes: Pecho -> PressBanca(4x10), Fondos(3x12), Plancha(2x60) [45min]
 Martes: Cardio [30min]
-Miercoles: Espalda -> Remo(5x8), Dominadas(4x6) [50min]
+Miercoles: Espalda -> Remo(5x8), Dominadas(4x6) [150min]
 Jueves: Hombros -> PressHombro(4x10), Plancha(3x60)
 Viernes: Piernas -> Sentadilla(4x12), Plancha(3x90) [60min]
 
