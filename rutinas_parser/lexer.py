@@ -10,6 +10,7 @@ TOKEN_SPEC = [
     ('DESCANSO', r'Descanso'),
     ('FLECHA',   r'->'),
     ('PUNTOS',   r':'),
+    ('PUNTOYCOMA', r';'),
     ('COMA',     r','),
     ('X',        r'x'),
     ('LPAREN',   r'\('),

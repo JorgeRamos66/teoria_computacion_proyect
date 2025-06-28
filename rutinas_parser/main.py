@@ -41,7 +41,26 @@ def imprimir_arbol(arbol, prefijo="", es_ultimo=True):
             imprimir_arbol(item, nuevo_prefijo, True)
     else:
         print(prefijo + "└── " + str(arbol))
+
+
+# Después de la función imprimir_arbol, agregá esta función:
+def imprimir_tipos_actividad(actividad):
+    if actividad['tipo'] == 'multiple':
+        for i, act in enumerate(actividad['actividades'], 1):
+            print(f"  Actividad {i}: {act['tipo']}")
+    else:
+        print(f"  Actividad: {actividad['tipo']}")
+
 print("Árboles de derivación de las rutinas válidas:")
 for arbol in resultados_validos:
     imprimir_arbol(arbol)
+    # Ahora imprimimos los tipos de actividad (considerando multiples)
+    if 'Rutina' in arbol:
+        rutina = arbol['Rutina']
+        if isinstance(rutina, dict) and 'actividad' in rutina:
+            print("Tipos de actividad para el día:")
+            imprimir_tipos_actividad(rutina['actividad'])
     print('-' * 40)
+
+
+

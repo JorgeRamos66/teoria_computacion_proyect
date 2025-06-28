@@ -29,6 +29,17 @@ class Parser:
         return {'Dia': {'nombre': dia, 'actividad': actividad}}
 
     def parse_actividad(self):
+        actividades = [self.parse_actividad_simple()]
+        while self.peek('PUNTOYCOMA'):
+            self.match('PUNTOYCOMA')
+            actividades.append(self.parse_actividad_simple())
+
+        if len(actividades) == 1:
+            return actividades[0]
+        else:
+            return {'tipo': 'compuesta', 'actividades': actividades}
+
+    def parse_actividad_simple(self):
         if self.peek('GRUPO'):
             grupo = self.match('GRUPO')[1]
             self.match('FLECHA')
@@ -41,12 +52,12 @@ class Parser:
             return {'tipo': 'cardio', 'duracion': duracion}
         elif self.peek('DESCANSO'):
             self.match('DESCANSO')
-            return {'tipo': 'descanso'}
-        elif self.peek('DORMIR'):
-            self.match('DORMIR')
-            return {'tipo': 'dormir'}
+            duracion = self.parse_duracion_opt()
+            return {'tipo': 'descanso', 'duracion': duracion}
         else:
             raise SyntaxError("Actividad inválida")
+
+
 
     def parse_ejercicios(self):
         ejercicios = [self.parse_ejercicio()]
