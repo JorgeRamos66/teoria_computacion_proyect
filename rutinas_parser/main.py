@@ -29,9 +29,14 @@ def imprimir_arbol(arbol, prefijo="", es_ultimo=True):
         for i, clave in enumerate(claves):
             es_ult = (i == len(claves) - 1)
             rama = "└── " if es_ult else "├── "
-            print(prefijo + rama + str(clave))
-            nuevo_prefijo = prefijo + ("    " if es_ult else "│   ")
-            imprimir_arbol(arbol[clave], nuevo_prefijo, True)
+            if clave == 'duracion' and isinstance(arbol[clave], dict) and list(arbol[clave].keys()) == ['Duracion']:
+                print(prefijo + rama + str(clave))
+                nuevo_prefijo = prefijo + ("    " if es_ult else "│   ")
+                imprimir_arbol(arbol[clave]['Duracion'], nuevo_prefijo, True)
+            else:
+                print(prefijo + rama + str(clave))
+                nuevo_prefijo = prefijo + ("    " if es_ult else "│   ")
+                imprimir_arbol(arbol[clave], nuevo_prefijo, True)
     elif isinstance(arbol, list):
         for i, item in enumerate(arbol):
             es_ult = (i == len(arbol) - 1)
@@ -42,8 +47,6 @@ def imprimir_arbol(arbol, prefijo="", es_ultimo=True):
     else:
         print(prefijo + "└── " + str(arbol))
 
-
-# Después de la función imprimir_arbol, agregá esta función:
 def imprimir_tipos_actividad(actividad):
     if actividad['tipo'] == 'multiple':
         for i, act in enumerate(actividad['actividades'], 1):
@@ -53,14 +56,14 @@ def imprimir_tipos_actividad(actividad):
 
 print("Árboles de derivación de las rutinas válidas:")
 for arbol in resultados_validos:
-    imprimir_arbol(arbol)
-    # Ahora imprimimos los tipos de actividad (considerando multiples)
-    if 'Rutina' in arbol:
+    # Solo imprime si el árbol tiene contenido útil
+    if 'Rutina' in arbol and arbol['Rutina'] and arbol['Rutina'] != {} and arbol['Rutina'] != []:
+        imprimir_arbol(arbol)
         rutina = arbol['Rutina']
         if isinstance(rutina, dict) and 'actividad' in rutina:
             print("Tipos de actividad para el día:")
             imprimir_tipos_actividad(rutina['actividad'])
-    print('-' * 40)
+        print('-' * 40)
 
 
 

@@ -37,7 +37,7 @@ class Parser:
         if len(actividades) == 1:
             return actividades[0]
         else:
-            return {'tipo': 'compuesta', 'actividades': actividades}
+            return {'tipo': 'multiple', 'actividades': actividades}
 
     def parse_actividad_simple(self):
         if self.peek('GRUPO'):
@@ -45,15 +45,24 @@ class Parser:
             self.match('FLECHA')
             ejercicios = self.parse_ejercicios()
             duracion = self.parse_duracion_opt()
-            return {'tipo': 'fuerza', 'grupo': grupo, 'ejercicios': ejercicios, 'duracion': duracion}
+            actividad = {'grupo': grupo, 'ejercicios': ejercicios}
+            if duracion:
+                actividad['duracion'] = duracion
+            return actividad
         elif self.peek('CARDIO'):
             self.match('CARDIO')
             duracion = self.parse_duracion_opt()
-            return {'tipo': 'cardio', 'duracion': duracion}
+            actividad = {}
+            if duracion:
+                actividad['duracion'] = duracion
+            return {'cardio': actividad} if actividad else {'cardio': None}
         elif self.peek('DESCANSO'):
             self.match('DESCANSO')
             duracion = self.parse_duracion_opt()
-            return {'tipo': 'descanso', 'duracion': duracion}
+            actividad = {}
+            if duracion:
+                actividad['duracion'] = duracion
+            return {'descanso': actividad} if actividad else {'descanso': None}
         else:
             raise SyntaxError("Actividad inválida")
 
@@ -72,11 +81,19 @@ class Parser:
     def parse_ejercicio(self):
         nombre = self.match('EJERCICIO')[1]
         self.match('LPAREN')
-        series = self.match('NUM')[1]
+        series = self.parse_numero()
         self.match('X')
-        repeticiones = self.match('NUM')[1]
+        repeticiones = self.parse_numero()
         self.match('RPAREN')
-        return {'nombre': nombre, 'series': series, 'reps': repeticiones}
+        return {
+            'Ejercicio': {
+                'nombre': nombre,
+                'SeriesRep': {
+                    'series': series,
+                    'reps': repeticiones
+                }
+            }
+        }
 
     def parse_duracion_opt(self):
         if self.peek('LBRACK'):
@@ -90,9 +107,13 @@ class Parser:
                 encontrado = self.tokens[self.pos][1] if self.pos < len(self.tokens) else 'EOF'
                 raise SyntaxError(f"Se esperaba min, se encontró {encontrado}")
             self.match('RBRACK')
-            return minutos
+            return f"{minutos} Minutos"
         else:
             return None
+
+    def parse_numero(self):
+        num = self.match('NUM')[1]
+        return {'Numero': num}
 
     def peek(self, tipo):
         return self.pos < len(self.tokens) and self.tokens[self.pos][0] == tipo
